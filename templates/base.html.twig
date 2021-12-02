@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{% endblock %} | Farmitoo</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <p>&copy; 2021 Adrien Durmier</p>
+        </footer>
+    </body>
+</html>
