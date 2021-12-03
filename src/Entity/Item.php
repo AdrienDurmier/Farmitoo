@@ -32,7 +32,7 @@ class Item
     /**
      * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="items")
      */
-    private $itemOrder;
+    private $order;
 
     public function getId(): ?int
     {
@@ -63,15 +63,34 @@ class Item
         return $this;
     }
 
-    public function getItemOrder(): ?Order
+    public function getOrder(): ?Order
     {
-        return $this->itemOrder;
+        return $this->order;
     }
 
-    public function setItemOrder(?Order $itemOrder): self
+    public function setOrder(?Order $order): self
     {
-        $this->itemOrder = $itemOrder;
+        $this->order = $order;
 
         return $this;
+    }
+
+    public function getTotalHT(): ?int
+    {
+        return $this->quantity * $this->product->getPrice();
+    }
+
+    public function getTotalShipment(): ?int
+    {
+        $total = 0.00;
+        switch ($this->product->getBrand()->getTitle()) {
+            case 'Farmitoo':
+                $total = ceil($this->getQuantity() / 3) * 20 ;
+                break;
+            case 'Gallagher':
+                $total = 15;
+                break;
+        }
+        return $total;
     }
 }

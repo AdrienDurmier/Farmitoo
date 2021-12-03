@@ -1,6 +1,9 @@
 @import "custom";
 @import "~bootstrap/scss/bootstrap";
 
-body {
-    background-color: lightgray;
-}
+body {background-color: lightgray;}
+
+/* Checkout */
+/* Checkout - steps */
+#checkout_steps_list li + li::before {content: " > ";}
+#checkout_steps_list li.active {font-weight: bold;}

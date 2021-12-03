@@ -1,23 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Panier{% endblock %}
+{% block title %}Votre panier{% endblock %}
 
 {% block body %}
     <h1>Farmitoo</h1>
 
-    {# Todo macro #}
-    <div class="container mb-3">
-        <div class="card">
-            <div class="card-body">
-                <ul class="list-inline text-center">
-                    <li class="list-inline-item">Panier</li>
-                    <li class="list-inline-item">Coordonnées</li>
-                    <li class="list-inline-item">Paiement</li>
-                    <li class="list-inline-item">Validation</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    {# Bandeau pour afficher dans quelle étape du tunnel d'achat se trouve l'utilisateur #}
+    {% import 'checkout/_steps.html.twig' as steps %}
+    {{ steps.display('panier') }}
 
     <div class="container">
         <div class="row">
@@ -26,26 +16,41 @@
                     <div class="card-body">
                         <h4 class="d-flex justify-content-between align-items-center mb-3">
                             <span class="text-primary"><i class="fas fa-shopping-cart"></i> Votre panier</span>
-                            <span class="badge bg-primary rounded-pill">3</span>
+                            <span class="badge bg-primary rounded-pill">{{ order.countItem() }}</span>
                         </h4>
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th scope="col">Produit</th>
-                                    <th scope="col">PU</th>
-                                    <th scope="col">Quantité</th>
+                                    <th scope="col" class="text-center">PU</th>
+                                    <th scope="col" class="text-center">Quantité</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for product in products %}
+                                {% for item in order.items %}
                                     <tr>
                                         <td>
-                                            {{ product.title }}
+                                            {{ item.product.title }}
                                             <br>
-                                            <small class="text-muted">{{ product.brand }}</small>
+                                            <small class="text-muted">Marque: {{ item.product.brand }}</small>
+                                            <br>
+                                            <small class="text-muted"><i class="fas fa-shipping-fast"></i> Frais de port: {{ item.getTotalShipment() }}€</small>
                                         </td>
-                                        <td>{{ product.price }}€</td>
-                                        <td><input type="number" step="1" min="0" value="1"></td>
+                                        <td class="text-center">
+                                            {{ item.product.price }}€ HT
+                                            <br>
+                                            <small class="text-muted">TVA: {{ item.product.brand.tax }}</small>
+                                        </td>
+                                        <td class="text-center">
+                                            {{ item.quantity }}
+                                            <br>
+                                            <a href="#" class="checkout-cart-item-plus">
+                                                <i class="fas fa-plus-circle"></i>
+                                            </a>
+                                            <a href="#" class="checkout-cart-item-minus">
+                                                <i class="fas fa-minus-circle"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -60,20 +65,24 @@
                         <table class="table">
                             <tbody>
                                 <tr>
+                                    <td colspan="2" class="text-end fw-bold">Sous total HT</td>
+                                    <td><span>{{ order.getSousTotalHT() }}</span>€</td>
+                                </tr>
+                                <tr>
                                     <td colspan="2" class="text-end fw-bold">Frais de port HT</td>
-                                    <td>todo€</td>
+                                    <td><span>{{ order.getTotalShipment() }}</span>€</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="text-end fw-bold">Total HT</td>
-                                    <td>todo€</td>
+                                    <td><span>{{ order.getTotalHT() }}</span>€</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="text-end fw-bold">TVA</td>
-                                    <td>todo€</td>
+                                    <td><span>{{ order.getTotalTax() }}</span>€</td>
                                 </tr>
-                                <tr>
+                                <tr style="font-size:1.5em;">
                                     <td colspan="2" class="text-end fw-bold">Total TTC</td>
-                                    <td>todo€</td>
+                                    <td><b><span>{{ order.getTotalTTC() }}</span>€</b></td>
                                 </tr>
                             </tbody>
                         </table>

@@ -22,6 +22,7 @@ class ProductTest extends TestCase
         $product = $this->product->setTitle($value);
         self::assertInstanceOf(Product::class, $product);
         self::assertEquals($value, $this->product->getTitle());
+        self::assertEquals($value, $this->product); // test du __toString
     }
 
     public function testGetPrice():void

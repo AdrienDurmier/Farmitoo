@@ -13,7 +13,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
     {
         $product1 = new Product();
         $product1->setTitle('Cuve à gasoil');
-        $product1->setPrice(250000);
+        $product1->setPrice(25000);
         $product1->setBrand($this->getReference('brand-farmitoo'));
         $manager->persist($product1);
         $this->addReference('product-cuve_a_gazoil', $product1);

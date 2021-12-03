@@ -29,6 +29,12 @@ class Brand
      */
     private $products;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Tax::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $tax;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -82,6 +88,18 @@ class Brand
                 $product->setBrand(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTax(): ?Tax
+    {
+        return $this->tax;
+    }
+
+    public function setTax(?Tax $tax): self
+    {
+        $this->tax = $tax;
 
         return $this;
     }
