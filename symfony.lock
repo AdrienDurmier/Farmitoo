@@ -81,6 +81,9 @@
     "doctrine/sql-formatter": {
         "version": "1.1.2"
     },
+    "liip/test-fixtures-bundle": {
+        "version": "2.2.1"
+    },
     "myclabs/deep-copy": {
         "version": "1.10.2"
     },
@@ -194,18 +197,6 @@
     "sebastian/version": {
         "version": "3.0.2"
     },
-    "sensio/framework-extra-bundle": {
-        "version": "6.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "5.2",
-            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
-        },
-        "files": [
-            "./config/packages/sensio_framework_extra.yaml"
-        ]
-    },
     "symfony/asset": {
         "version": "v5.2.12"
     },
@@ -309,9 +300,6 @@
             "src/Controller/.gitignore",
             "src/Kernel.php"
         ]
-    },
-    "symfony/http-client-contracts": {
-        "version": "v2.4.0"
     },
     "symfony/http-foundation": {
         "version": "v5.2.7"

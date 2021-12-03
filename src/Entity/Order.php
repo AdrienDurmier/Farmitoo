@@ -70,7 +70,7 @@ class Order
      * Compte le nombre total d'article dans la commande
      * @return int|null
      */
-    public function countItem(): ?int
+    public function countItems(): ?int
     {
         $total = 0;
         foreach ($this->getItems() as $item) {
