@@ -7,6 +7,7 @@ use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
@@ -18,6 +19,7 @@ class Order
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("item:read")
      */
     private $id;
 
@@ -68,9 +70,10 @@ class Order
 
     /**
      * Compte le nombre total d'article dans la commande
+     * @Groups("item:read")
      * @return int|null
      */
-    public function countItems(): ?int
+    public function getCountItems(): ?int
     {
         $total = 0;
         foreach ($this->getItems() as $item) {
@@ -79,6 +82,10 @@ class Order
         return $total;
     }
 
+    /**
+     * @Groups("item:read")
+     * @return int|null
+     */
     public function getSousTotalHT(): ?int
     {
         $total = 0;
@@ -88,6 +95,10 @@ class Order
         return $total;
     }
 
+    /**
+     * @Groups("item:read")
+     * @return int|null
+     */
     public function getTotalShipment(): ?int
     {
         $total = 0.00;
@@ -97,11 +108,19 @@ class Order
         return $total;
     }
 
+    /**
+     * @Groups("item:read")
+     * @return int|null
+     */
     public function getTotalHT(): ?int
     {
         return $this->getSousTotalHT() + $this->getTotalShipment();
     }
 
+    /**
+     * @Groups("item:read")
+     * @return int|null
+     */
     public function getTotalTax(): ?int
     {
         $total = 0;
@@ -117,6 +136,10 @@ class Order
         return $total;
     }
 
+    /**
+     * @Groups("item:read")
+     * @return int|null
+     */
     public function getTotalTTC(): ?int
     {
         return $this->getTotalHT() + $this->getTotalTax();

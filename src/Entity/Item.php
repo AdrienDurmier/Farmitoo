@@ -5,6 +5,7 @@ namespace App\Entity;
 
 use App\Repository\ItemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ItemRepository::class)
@@ -15,22 +16,26 @@ class Item
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("item:read")
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Product::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("item:read")
      */
     private $product;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("item:read")
      */
     private $quantity;
 
     /**
      * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="items")
+     * @Groups("item:read")
      */
     private $order;
 
@@ -75,11 +80,19 @@ class Item
         return $this;
     }
 
+    /**
+     * @Groups("item:read")
+     * @return int|null
+     */
     public function getTotalHT(): ?int
     {
         return $this->quantity * $this->product->getPrice();
     }
 
+    /**
+     * @Groups("item:read")
+     * @return int|null
+     */
     public function getTotalShipment(): ?int
     {
         $total = 0.00;
