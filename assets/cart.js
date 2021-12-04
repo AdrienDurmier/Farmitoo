@@ -34,6 +34,9 @@ function changeQuantity(itemId, quantity){
         },
         success: function (data) {
             $('#cart-item-row-' + itemId).attr('data-quantity', data.quantity);
+            // Mise à jour du formulaire
+            $('#cart-item-quantity-input-' + itemId).val(data.quantity);
+            // Mise à jour de l'interface
             $('#cart-count-items').text(data.order.countItems);
             $('#cart-item-row-' + itemId).find('.cart-item-quantity').text(data.quantity);
             $('#cart-item-row-' + itemId).find('.cart-item-shipment').text(data.totalShipment);

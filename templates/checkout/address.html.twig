@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos coordonnées{% endblock %}
+
+{% block body %}
+    <h1>Farmitoo</h1>
+
+    {# Bandeau pour afficher dans quelle étape du tunnel d'achat se trouve l'utilisateur #}
+    {% import 'checkout/_steps.html.twig' as steps %}
+    {{ steps.display('address') }}
+
+    <div class="container">
+        <form action="#" method="post">
+            TODO
+
+            <hr>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-caret-right"></i> Étape suivante
+            </button>
+
+        </form>
+    </div>
+    
+{% endblock %}

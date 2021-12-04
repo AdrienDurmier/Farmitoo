@@ -7,7 +7,7 @@
 
     {# Bandeau pour afficher dans quelle étape du tunnel d'achat se trouve l'utilisateur #}
     {% import 'checkout/_steps.html.twig' as steps %}
-    {{ steps.display('panier') }}
+    {{ steps.display('cart') }}
 
     <div class="container">
         <div class="row">
@@ -94,9 +94,16 @@
         </div>
 
         <hr>
-        <button type="button" class="btn btn-primary">
-            <i class="fas fa-caret-right"></i> Paiement
-        </button>
+
+        <form action="{{ path('checkout_address') }}" method="post">
+            <input type="hidden" name="order" value="{{ order.id }}">
+            {% for item in order.items %}
+                <input type="hidden" id="cart-item-quantity-input-{{ item.id }}" name="items[{{ item.id }}]" value="{{ item.quantity }}">
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-caret-right"></i> Étape suivante
+            </button>
+        </form>
 
     </div>
     

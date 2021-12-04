@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Item;
 use App\Entity\Order;
 use App\Entity\Promotion;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,8 +15,10 @@ class MainController extends AbstractController
 {
     /**
      * @Route("/", name="checkout_cart")
+     * @param ManagerRegistry $doctrine
+     * @return Response
      */
-    public function index(): Response
+    public function index(ManagerRegistry $doctrine): Response
     {
         //$product1 = new Product('Cuve à gasoil', 250000, 'Farmitoo');
         //$product2 = new Product('Nettoyant pour cuve', 5000, 'Farmitoo');
@@ -23,12 +28,33 @@ class MainController extends AbstractController
         // Cuve à gasoil x1
         // Nettoyant pour cuve x3
         // Piquet de clôture x5
-        $orders = $this->getDoctrine()->getRepository(Order::class)->findAll();
-        $promotions = $this->getDoctrine()->getRepository(Order::class)->findAll();
+        $orders = $doctrine->getRepository(Order::class)->findAll();
+        $promotions = $doctrine->getRepository(Order::class)->findAll();
 
         return $this->render('checkout/cart.html.twig', [
             'order'      => $orders[0],
             'promotions' => $promotions,
+        ]);
+    }
+
+    /**
+     * @Route("/checkout/address", name="checkout_address", methods="POST")
+     * @param ManagerRegistry $doctrine
+     * @param Request $request
+     * @return Response
+     */
+    public function address(ManagerRegistry $doctrine, Request $request): Response
+    {
+        $datas = $request->request->all();
+        $em = $doctrine->getManager();
+
+        $order = $doctrine->getRepository(Order::class)->find($datas['order']);
+        $order->setStep(Order::STEP_ADDRESS);
+        $em->persist($order);
+        $em->flush();
+
+        return $this->render('checkout/address.html.twig', [
+            'order' => $order,
         ]);
     }
 }

@@ -73,7 +73,7 @@ class OrderTest extends TestCase
 
     public function testCountItems():void
     {
-        self::assertEquals(9, $this->order->countItems());
+        self::assertEquals(9, $this->order->getCountItems());
     }
 
     public function testGetSousTotalHT():void

@@ -15,6 +15,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Order
 {
+    const STEP_CART = 0;
+    const STEP_ADDRESS = 1;
+    const STEP_SHIPMENT = 2;
+    const STEP_VALIDATION = 3;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -28,9 +33,16 @@ class Order
      */
     private $items;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups("item:read")
+     */
+    private $step;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
+        $this->step = self::STEP_CART;
     }
 
     public function getId(): ?int
@@ -64,6 +76,18 @@ class Order
                 $item->setOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStep(): ?int
+    {
+        return $this->step;
+    }
+
+    public function setStep(int $step): self
+    {
+        $this->step = $step;
 
         return $this;
     }

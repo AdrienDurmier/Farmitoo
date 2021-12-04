@@ -4,10 +4,18 @@
         <div class="card">
             <div class="card-body">
                 <ul id="checkout_steps_list" class="list-inline text-center">
-                    <li class="list-inline-item {% if activeStep == 'panier' %}active{% endif %}">Panier</li>
-                    <li class="list-inline-item {% if activeStep == 'coordonnées' %}active{% endif %}">Coordonnées</li>
-                    <li class="list-inline-item {% if activeStep == 'paiement' %}active{% endif %}">Paiement</li>
-                    <li class="list-inline-item {% if activeStep == 'validation' %}active{% endif %}">Validation</li>
+                    <li class="list-inline-item {% if activeStep == 'cart' %}active{% endif %}">
+                        Panier
+                    </li>
+                    <li class="list-inline-item {% if activeStep == 'address' %}active{% endif %}">
+                        Coordonnées
+                    </li>
+                    <li class="list-inline-item {% if activeStep == 'payment' %}active{% endif %}">
+                        Paiement
+                    </li>
+                    <li class="list-inline-item {% if activeStep == 'validation' %}active{% endif %}">
+                        Validation
+                    </li>
                 </ul>
             </div>
         </div>
