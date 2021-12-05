@@ -95,4 +95,43 @@ class PromotionServiceTest extends KernelTestCase
         $freeFelivery = $promotionService->isFreeDelivery($orderFreeDelivery, $promotionFreeDelivery);
         $this->assertTrue($freeFelivery);
     }
+
+    public function testUpdateMaxUsesIfReduction():void
+    {
+        $kernel = self::bootKernel();
+        $promotionService = $kernel->getContainer()->get(PromotionService::class);
+
+        $reduction = 100;
+        $freeDelivery = false;
+        $maxUses = 3;
+
+        $maxUses = $promotionService->updateMaxUses($reduction, $freeDelivery, $maxUses);
+        $this->assertEquals(2, $maxUses);
+    }
+
+    public function testUpdateMaxUsesIfFreeDelivery():void
+    {
+        $kernel = self::bootKernel();
+        $promotionService = $kernel->getContainer()->get(PromotionService::class);
+
+        $reduction = 0;
+        $freeDelivery = true;
+        $maxUses = 5;
+
+        $maxUses = $promotionService->updateMaxUses($reduction, $freeDelivery, $maxUses);
+        $this->assertEquals(4, $maxUses);
+    }
+
+    public function testUpdateMaxUsesIfMaxUseIsNull():void
+    {
+        $kernel = self::bootKernel();
+        $promotionService = $kernel->getContainer()->get(PromotionService::class);
+
+        $reduction = 0;
+        $freeDelivery = true;
+        $maxUses = null;
+
+        $maxUses = $promotionService->updateMaxUses($reduction, $freeDelivery, $maxUses);
+        $this->assertNull($maxUses);
+    }
 }

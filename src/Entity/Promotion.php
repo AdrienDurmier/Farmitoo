@@ -49,6 +49,11 @@ class Promotion
      */
     private $dateEnd;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $maxUses;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -143,5 +148,17 @@ class Promotion
             return true;
         }
         return false;
+    }
+
+    public function getMaxUses(): ?int
+    {
+        return $this->maxUses;
+    }
+
+    public function setMaxUses(?int $maxUses): self
+    {
+        $this->maxUses = $maxUses;
+
+        return $this;
     }
 }

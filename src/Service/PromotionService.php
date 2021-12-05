@@ -26,8 +26,8 @@ class PromotionService
     {
         $promotions = $this->em->getRepository(Promotion::class)->findAll();
         foreach ($promotions as $promotion){
-            // Si la promotion est en cours
-            if(!$promotion->isOnGoing(new \DateTime())){
+            // Si la promotion est en cours où si le nombre d'usages max est atteint
+            if(!$promotion->isOnGoing(new \DateTime()) || $promotion->getMaxUses()){
                 continue;
             }
             // Mise à jour de la réduction sur cette commande basé sur le minimum d'achat (sous total HT)
@@ -41,6 +41,11 @@ class PromotionService
             // Mise à jour des frais de port de cette commande en fonction de la promotion
             $freeDelivery = $this->isFreeDelivery($order->getFreeDelivery(), $promotion->getFreeDelivery());
             $order->setFreeDelivery($freeDelivery);
+
+            // Mise à jour du nombre d'usages restant
+            $maxUses = $this->updateMaxUses($reduction, $freeDelivery, $promotion->getMaxUses());
+            $promotion->setMaxUses($maxUses);
+            $this->em->persist($promotion);
         }
         $this->em->persist($order);
         $this->em->flush();
@@ -85,5 +90,19 @@ class PromotionService
     public function isFreeDelivery(bool $orderFreeDelivery, bool $promotionFreeDelivery): bool
     {
         return ($orderFreeDelivery) ? true : $promotionFreeDelivery;
+    }
+
+    /**
+     * Mise à jour du nombre d'usage restant
+     * @return float|int
+     */
+    public function updateMaxUses(int $reduction, bool $promotionFreeDelivery, ?int $promotionMaxUses): ?int
+    {
+        if($promotionMaxUses > 0){
+            if($reduction > 0 || $promotionFreeDelivery) {
+                return $promotionMaxUses - 1;
+            }
+        }
+        return null;
     }
 }
