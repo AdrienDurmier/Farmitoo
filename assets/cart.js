@@ -11,10 +11,31 @@ $(document).on('click', '.checkout-cart-item-plus', function() {
 $(document).on('click', '.checkout-cart-item-minus', function() {
     let itemId = $(this).closest('tr').data('id');
     let quantity = $(this).closest('tr').attr('data-quantity');
-    if (quantity > 0){
+    if (quantity > 1){
         changeQuantity(itemId, parseInt(quantity) - 1 );
     }
-    // TODO supprimer si égal à 0
+});
+
+// Événement lors de la décrémentation de la quantité
+$(document).on('click', '.checkout-cart-item-remove', function() {
+    let itemId = $(this).closest('tr').data('id');
+    $.ajax({
+        type: "delete",
+        dataType: 'json',
+        url : 'item/' + itemId,
+        error : function (data) {
+            console.error(data);
+        },
+        success: function (data) {
+            $('#cart-item-row-' +itemId).fadeOut();
+            $('#cart-order-sous-total-ht').text(data.sousTotalHT);
+            $('#cart-order-reduction').text(data.reduction);
+            $('#cart-order-total-shipment').text(data.totalShipment);
+            $('#cart-order-total-ht').text(data.totalHT);
+            $('#cart-order-total-tax').text(data.totalTax);
+            $('#cart-order-total-ttc').text(data.totalTTC);
+        }
+    });
 });
 
 function changeQuantity(itemId, quantity){

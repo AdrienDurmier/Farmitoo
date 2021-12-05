@@ -49,4 +49,22 @@ class ItemControllerTest extends WebTestCase
             $this->assertEquals(200, $client->getResponse()->getStatusCode());
         }
     }
+
+    public function testDelete(): void
+    {
+        self::ensureKernelShutdown();
+        $client = self::createClient();
+        $client->enableProfiler();
+
+        $orders = $this->entityManager->getRepository(Order::class)->findBy([], [], 1);
+        $order = $orders[0];
+
+        foreach($order->getItems() as $item){
+            $client->request(Request::METHOD_DELETE, '/item/' . $item->getId());
+            // Test de la réponse
+            $this->assertTrue($client->getResponse()->isSuccessful());
+            $this->assertJson($client->getResponse()->getContent());
+            $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        }
+    }
 }

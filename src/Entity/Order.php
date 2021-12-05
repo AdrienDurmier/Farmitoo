@@ -24,7 +24,7 @@ class Order
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("item:read")
+     * @Groups({"item:read", "order:read"})
      */
     private $id;
 
@@ -41,13 +41,13 @@ class Order
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups("item:read")
+     * @Groups({"item:read", "order:read"})
      */
     private $reduction = 0;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups("item:read")
+     * @Groups({"item:read", "order:read"})
      */
     private $freeDelivery = false;
 
@@ -131,7 +131,7 @@ class Order
 
     /**
      * Compte le nombre total d'article dans la commande
-     * @Groups("item:read")
+     * @Groups({"item:read", "order:read"})
      * @return int|null
      */
     public function getCountItems(): ?int
@@ -144,7 +144,7 @@ class Order
     }
 
     /**
-     * @Groups("item:read")
+     * @Groups({"item:read", "order:read"})
      * @return int|null
      */
     public function getSousTotalHT(): ?int
@@ -157,7 +157,7 @@ class Order
     }
 
     /**
-     * @Groups("item:read")
+     * @Groups({"item:read", "order:read"})
      * @return int|null
      */
     public function getTotalShipment(): ?int
@@ -176,7 +176,7 @@ class Order
     }
 
     /**
-     * @Groups("item:read")
+     * @Groups({"item:read", "order:read"})
      * @return int|null
      */
     public function getTotalHT(): ?int
@@ -185,7 +185,7 @@ class Order
     }
 
     /**
-     * @Groups("item:read")
+     * @Groups({"item:read", "order:read"})
      * @return int|null
      */
     public function getTotalTax(): ?int
@@ -204,7 +204,7 @@ class Order
     }
 
     /**
-     * @Groups("item:read")
+     * @Groups({"item:read", "order:read"})
      * @return int|null
      */
     public function getTotalTTC(): ?int

@@ -42,4 +42,29 @@ class ItemController extends AbstractController
 
         return new JsonResponse($itemNormalize);
     }
+
+    /**
+     * @Route("/item/{id}", name="item.delete", methods="DELETE")
+     * @param int $id
+     * @param PromotionService $promotionService
+     * @param ManagerRegistry $doctrine
+     * @param SerializerInterface $serializer
+     * @return JsonResponse
+     * @throws ExceptionInterface
+     */
+    public function delete(int $id, PromotionService $promotionService, ManagerRegistry $doctrine, SerializerInterface $serializer)
+    {
+        $em = $doctrine->getManager();
+        $item = $doctrine->getRepository(Item::class)->find($id);
+        $order = $item->getOrder();
+        $em->remove($item);
+        $em->flush();
+
+        // Mise à jour de la commande avec les promotions éventuelles
+        $promotionService->apply($order);
+
+        $orderNormalize = $serializer->normalize($order, null, ['groups' => 'order:read']);
+
+        return new JsonResponse($orderNormalize);
+    }
 }
