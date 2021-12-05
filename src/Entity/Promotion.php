@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PromotionRepository;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,16 @@ class Promotion
      * @ORM\Column(type="boolean")
      */
     private $freeDelivery;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateStart;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateEnd;
 
     public function getId(): ?int
     {
@@ -71,5 +83,48 @@ class Promotion
         $this->freeDelivery = $freeDelivery;
 
         return $this;
+    }
+
+    public function getDateStart(): ?DateTimeInterface
+    {
+        return $this->dateStart;
+    }
+
+    public function setDateStart(?DateTimeInterface $dateStart): self
+    {
+        $this->dateStart = $dateStart;
+
+        return $this;
+    }
+
+    public function getDateEnd(): ?DateTimeInterface
+    {
+        return $this->dateEnd;
+    }
+
+    public function setDateEnd(?DateTimeInterface $dateEnd): self
+    {
+        $this->dateEnd = $dateEnd;
+
+        return $this;
+    }
+
+    /**
+     * Vérifie si la promotion est en cours
+     * @param DateTime $date
+     * @return bool
+     */
+    public function isOnGoing(DateTime $date): bool
+    {
+        if($this->getDateStart() == null && $this->getDateEnd() > $date){
+            return true;
+        }
+        if($this->getDateEnd() == null && $this->getDateStart() < $date){
+            return true;
+        }
+        if($this->getDateStart() < $date && $this->getDateEnd() > $date){
+            return true;
+        }
+        return false;
     }
 }

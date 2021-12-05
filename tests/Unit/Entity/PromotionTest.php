@@ -38,4 +38,63 @@ class PromotionTest extends TestCase
         self::assertInstanceOf(Promotion::class, $promotion);
         self::assertEquals($value, $this->promotion->getFreeDelivery());
     }
+
+    public function testIsOnGoingWhenDateBetweenStartAndEnd():void
+    {
+        $promotion = new Promotion();
+        $date = \DateTime::createFromFormat('Y-m-d', '2021-12-15');
+        $dateStart = \DateTime::createFromFormat('Y-m-d', '2021-12-01');
+        $promotion->setDateStart($dateStart);
+        $dateEnd = \DateTime::createFromFormat('Y-m-d', '2021-12-31');
+        $promotion->setDateEnd($dateEnd);
+
+        $isOnGoing = $promotion->isOnGoing($date);
+        self::assertTrue($isOnGoing);
+    }
+
+    public function testIsOnGoingWhenDateOutStartAndEnd():void
+    {
+        $promotion = new Promotion();
+        $date = \DateTime::createFromFormat('Y-m-d', '2021-10-02');
+        $dateStart = \DateTime::createFromFormat('Y-m-d', '2021-12-01');
+        $promotion->setDateStart($dateStart);
+        $dateEnd = \DateTime::createFromFormat('Y-m-d', '2021-12-31');
+        $promotion->setDateEnd($dateEnd);
+
+        $isOnGoing = $promotion->isOnGoing($date);
+        self::assertFalse($isOnGoing);
+    }
+
+    public function testIsOnGoingWhenDateStartIsNull():void
+    {
+        $promotion = new Promotion();
+        $date = \DateTime::createFromFormat('Y-m-d', '2021-02-25');
+        $dateEnd = \DateTime::createFromFormat('Y-m-d', '2021-12-01');
+        $promotion->setDateEnd($dateEnd);
+        $isOnGoing = $promotion->isOnGoing($date);
+        self::assertTrue($isOnGoing);
+
+        $date = \DateTime::createFromFormat('Y-m-d', '2022-02-25');
+        $dateEnd = \DateTime::createFromFormat('Y-m-d', '2021-12-01');
+        $promotion->setDateEnd($dateEnd);
+        $isOnGoing = $promotion->isOnGoing($date);
+        self::assertFalse($isOnGoing);
+    }
+
+    public function testIsOnGoingWhenDateEndIsNull():void
+    {
+        $promotion = new Promotion();
+        $date = \DateTime::createFromFormat('Y-m-d', '2022-02-25');
+        $dateStart = \DateTime::createFromFormat('Y-m-d', '2021-12-01');
+        $promotion->setDateStart($dateStart);
+        $isOnGoing = $promotion->isOnGoing($date);
+        self::assertTrue($isOnGoing);
+
+        $date = \DateTime::createFromFormat('Y-m-d', '2021-02-25');
+        $dateStart = \DateTime::createFromFormat('Y-m-d', '2021-12-01');
+        $promotion->setDateStart($dateStart);
+        $isOnGoing = $promotion->isOnGoing($date);
+        self::assertFalse($isOnGoing);
+    }
+
 }

@@ -26,9 +26,15 @@ class PromotionService
     {
         $promotions = $this->em->getRepository(Promotion::class)->findAll();
         foreach ($promotions as $promotion){
+            // Si la promotion est en cours
+            if(!$promotion->isOnGoing(new \DateTime())){
+                continue;
+            }
+            // Mise à jour de la réduction sur cette commande en fonction de la promotion
             $reduction = $this->calculReduction($order->getSousTotalHT(), $promotion->getMinAmount(), $promotion->getReduction());
             $order->setReduction($reduction);
 
+            // Mise à jour des frais de port de cette commande en fonction de la promotion
             $freeDelivery = $this->isFreeDelivery($order->getFreeDelivery(), $promotion->getFreeDelivery());
             $order->setFreeDelivery($freeDelivery);
         }
