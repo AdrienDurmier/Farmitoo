@@ -43,7 +43,7 @@
                                         <td class="text-center">
                                             {{ item.product.price }}€ HT
                                             <br>
-                                            <small class="text-muted">TVA: {{ item.product.brand.tax }}</small>
+                                            <small class="text-muted">TVA: {{ item.product.brand.vat }}</small>
                                         </td>
                                         <td class="text-center">
                                             <span class="cart-item-quantity">{{ item.quantity }}</span>
@@ -93,7 +93,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="text-end fw-bold">TVA</td>
-                                    <td><span id="cart-order-total-tax">{{ order.getTotalTax() }}</span>€</td>
+                                    <td><span id="cart-order-total-tax">{{ order.getTotalVat() }}</span>€</td>
                                 </tr>
                                 <tr style="font-size:1.5em;">
                                     <td colspan="2" class="text-end fw-bold">Total TTC</td>

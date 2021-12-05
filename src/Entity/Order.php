@@ -188,14 +188,14 @@ class Order
      * @Groups({"item:read", "order:read"})
      * @return int|null
      */
-    public function getTotalTax(): ?int
+    public function getTotalVat(): ?int
     {
         $total = 0;
         foreach ($this->getItems() as $item){
             $total +=
                   $item->getQuantity()
                 * $item->getProduct()->getPrice()
-                * $item->getProduct()->getBrand()->getTax()->getRate() / 100;
+                * $item->getProduct()->getBrand()->getVat()->getRate() / 100;
         }
 
         $total += ($this->getTotalShipment() * 20.00) / 100; // Ajout de la TVA à 20% sur les frais de port
@@ -209,6 +209,6 @@ class Order
      */
     public function getTotalTTC(): ?int
     {
-        return $this->getTotalHT() + $this->getTotalTax();
+        return $this->getTotalHT() + $this->getTotalVat();
     }
 }

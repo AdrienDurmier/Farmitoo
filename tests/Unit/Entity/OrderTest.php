@@ -6,7 +6,7 @@ use App\Entity\Brand;
 use App\Entity\Item;
 use App\Entity\Order;
 use App\Entity\Product;
-use App\Entity\Tax;
+use App\Entity\Vat;
 use PHPUnit\Framework\TestCase;
 
 class OrderTest extends TestCase
@@ -18,21 +18,21 @@ class OrderTest extends TestCase
         parent::setUp();
         $this->order = new Order();
 
-        $tax20 = new Tax();
+        $tax20 = new Vat();
         $tax20->setTitle('20%');
         $tax20->setRate(20.00);
 
-        $tax05 = new Tax();
+        $tax05 = new Vat();
         $tax05->setTitle('5%');
         $tax05->setRate(5.00);
 
         $farmitoo = new Brand();
         $farmitoo->setTitle('Farmitoo');
-        $farmitoo->setTax($tax20);
+        $farmitoo->setVat($tax20);
 
         $gallagher = new Brand();
         $gallagher->setTitle('Gallagher');
-        $gallagher->setTax($tax05);
+        $gallagher->setVat($tax05);
 
         $product1 = new Product();
         $product1->setTitle('Cuve à gasoil');
@@ -96,9 +96,9 @@ class OrderTest extends TestCase
         self::assertEquals(45055, $this->order->getTotalHT());
     }
 
-    public function testGetTotalTax():void
+    public function testGetTotalVat():void
     {
-        self::assertEquals(8261, $this->order->getTotalTax());
+        self::assertEquals(8261, $this->order->getTotalVat());
     }
 
     public function testGetTotalTTC():void

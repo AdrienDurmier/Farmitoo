@@ -17,6 +17,7 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="checkout_cart")
      * @param ManagerRegistry $doctrine
+     * @param PromotionService $promotionService
      * @return Response
      */
     public function index(ManagerRegistry $doctrine, PromotionService $promotionService): Response

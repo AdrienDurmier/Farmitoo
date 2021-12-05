@@ -30,10 +30,10 @@ class Brand
     private $products;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Tax::class)
+     * @ORM\ManyToOne(targetEntity=Vat::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $tax;
+    private $vat;
 
     public function __construct()
     {
@@ -92,14 +92,14 @@ class Brand
         return $this;
     }
 
-    public function getTax(): ?Tax
+    public function getVat(): ?Vat
     {
-        return $this->tax;
+        return $this->vat;
     }
 
-    public function setTax(?Tax $tax): self
+    public function setVat(?Vat $vat): self
     {
-        $this->tax = $tax;
+        $this->vat = $vat;
 
         return $this;
     }

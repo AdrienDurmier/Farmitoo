@@ -32,7 +32,7 @@ $(document).on('click', '.checkout-cart-item-remove', function() {
             $('#cart-order-reduction').text(data.reduction);
             $('#cart-order-total-shipment').text(data.totalShipment);
             $('#cart-order-total-ht').text(data.totalHT);
-            $('#cart-order-total-tax').text(data.totalTax);
+            $('#cart-order-total-tax').text(data.totalVat);
             $('#cart-order-total-ttc').text(data.totalTTC);
         }
     });
@@ -65,7 +65,7 @@ function changeQuantity(itemId, quantity){
             $('#cart-order-reduction').text(data.order.reduction);
             $('#cart-order-total-shipment').text(data.order.totalShipment);
             $('#cart-order-total-ht').text(data.order.totalHT);
-            $('#cart-order-total-tax').text(data.order.totalTax);
+            $('#cart-order-total-tax').text(data.order.totalVat);
             $('#cart-order-total-ttc').text(data.order.totalTTC);
         }
     });

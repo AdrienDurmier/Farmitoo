@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\TaxRepository;
+use App\Repository\VatRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=TaxRepository::class)
+ * @ORM\Entity(repositoryClass=VatRepository::class)
  */
-class Tax
+class Vat
 {
     /**
      * @ORM\Id
