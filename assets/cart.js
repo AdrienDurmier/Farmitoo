@@ -41,6 +41,7 @@ function changeQuantity(itemId, quantity){
             $('#cart-item-row-' + itemId).find('.cart-item-quantity').text(data.quantity);
             $('#cart-item-row-' + itemId).find('.cart-item-shipment').text(data.totalShipment);
             $('#cart-order-sous-total-ht').text(data.order.sousTotalHT);
+            $('#cart-order-reduction').text(data.order.reduction);
             $('#cart-order-total-shipment').text(data.order.totalShipment);
             $('#cart-order-total-ht').text(data.order.totalHT);
             $('#cart-order-total-tax').text(data.order.totalTax);

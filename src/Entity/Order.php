@@ -39,6 +39,19 @@ class Order
      */
     private $step;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups("item:read")
+     */
+    private $reduction = 0;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups("item:read")
+     */
+    private $freeDelivery = false;
+
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -92,6 +105,30 @@ class Order
         return $this;
     }
 
+    public function getReduction(): ?int
+    {
+        return $this->reduction;
+    }
+
+    public function setReduction(int $reduction): self
+    {
+        $this->reduction = $reduction;
+
+        return $this;
+    }
+
+    public function getFreeDelivery(): ?bool
+    {
+        return $this->freeDelivery;
+    }
+
+    public function setFreeDelivery(bool $freeDelivery): self
+    {
+        $this->freeDelivery = $freeDelivery;
+
+        return $this;
+    }
+
     /**
      * Compte le nombre total d'article dans la commande
      * @Groups("item:read")
@@ -125,6 +162,12 @@ class Order
      */
     public function getTotalShipment(): ?int
     {
+        // Cas où la livraison est offerte (via une promotion)
+        if($this->getFreeDelivery()){
+            return 0;
+        }
+
+        // Cas général: calcul des frais de port
         $total = 0.00;
         foreach ($this->getItems() as $item){
             $total += $item->getTotalShipment();
@@ -138,7 +181,7 @@ class Order
      */
     public function getTotalHT(): ?int
     {
-        return $this->getSousTotalHT() + $this->getTotalShipment();
+        return $this->getSousTotalHT() + $this->getTotalShipment() - $this->getReduction();
     }
 
     /**

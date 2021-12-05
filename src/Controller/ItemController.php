@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Item;
+use App\Service\PromotionService;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ItemController extends AbstractController
@@ -15,11 +17,14 @@ class ItemController extends AbstractController
     /**
      * @Route("/item/{id}", name="item.edit", methods="POST")
      * @param int $id
+     * @param PromotionService $promotionService
      * @param Request $request
      * @param ManagerRegistry $doctrine
+     * @param SerializerInterface $serializer
      * @return JsonResponse
+     * @throws ExceptionInterface
      */
-    public function edit(int $id, Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer)
+    public function edit(int $id, PromotionService $promotionService, Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer)
     {
         $datas = $request->request->all();
         $em = $doctrine->getManager();
@@ -28,6 +33,10 @@ class ItemController extends AbstractController
         $item->setQuantity($datas['quantity']);
         $em->persist($item);
         $em->flush();
+
+        // Mise à jour de la commande avec les promotions éventuelles
+        $order = $item->getOrder();
+        $promotionService->apply($order);
 
         $itemNormalize = $serializer->normalize($item, null, ['groups' => 'item:read']);
 
