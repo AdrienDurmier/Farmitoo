@@ -69,6 +69,9 @@ class OrderTest extends TestCase
     public function testGetItems():void
     {
         self::assertCount(3, $this->order->getItems());
+        foreach($this->order->getItems() as $item){
+            self::assertTrue($item instanceof Item);
+        }
     }
 
     public function testCountItems():void
@@ -84,6 +87,8 @@ class OrderTest extends TestCase
     public function testGetTotalShipment():void
     {
         self::assertEquals(55, $this->order->getTotalShipment());
+        $this->order->setFreeDelivery(true);
+        self::assertEquals(0, $this->order->getTotalShipment());
     }
 
     public function testGetTotalHT():void
