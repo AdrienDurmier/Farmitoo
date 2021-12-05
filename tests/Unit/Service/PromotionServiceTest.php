@@ -46,6 +46,32 @@ class PromotionServiceTest extends KernelTestCase
         $this->assertEquals(2000, $reduction);
     }
 
+    public function testCalculReductionMinItemsWhenOrderMinItemsIsSuperiorToPromotionMinItems():void
+    {
+        $kernel = self::bootKernel();
+        $promotionService = $kernel->getContainer()->get(PromotionService::class);
+
+        $orderMinItems = 15;
+        $promotionMinItems = 10;
+        $promotionReduction = 1000;
+
+        $reduction = $promotionService->calculReductionMinItems($orderMinItems, $promotionMinItems, $promotionReduction);
+        $this->assertEquals(1000, $reduction);
+    }
+
+    public function testCalculReductionMinItemsWhenOrderMinItemsIsInferiorToPromotionMinItems():void
+    {
+        $kernel = self::bootKernel();
+        $promotionService = $kernel->getContainer()->get(PromotionService::class);
+
+        $orderMinItems = 5;
+        $promotionMinItems = 10;
+        $promotionReduction = 1000;
+
+        $reduction = $promotionService->calculReductionMinItems($orderMinItems, $promotionMinItems, $promotionReduction);
+        $this->assertEquals(0, $reduction);
+    }
+
     public function testIsFreeDeliveryIfOrderFreeDeliveryIsTrue():void
     {
         $kernel = self::bootKernel();

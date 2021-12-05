@@ -25,6 +25,11 @@ class Promotion
     private $minAmount;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $minItems;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $reduction;
@@ -57,6 +62,18 @@ class Promotion
     public function setMinAmount(int $minAmount): self
     {
         $this->minAmount = $minAmount;
+
+        return $this;
+    }
+
+    public function getMinItems(): ?int
+    {
+        return $this->minItems;
+    }
+
+    public function setMinItems(?int $minItems): self
+    {
+        $this->minItems = $minItems;
 
         return $this;
     }

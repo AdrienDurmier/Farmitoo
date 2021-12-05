@@ -30,8 +30,12 @@ class PromotionService
             if(!$promotion->isOnGoing(new \DateTime())){
                 continue;
             }
-            // Mise à jour de la réduction sur cette commande en fonction de la promotion
+            // Mise à jour de la réduction sur cette commande basé sur le minimum d'achat (sous total HT)
             $reduction = $this->calculReduction($order->getSousTotalHT(), $promotion->getMinAmount(), $promotion->getReduction());
+
+            // Mise à jour de la réduction sur cette commande basé sur le minimum d'objet
+            $reduction += $this->calculReductionMinItems($order->getCountItems(), $promotion->getMinItems(), $promotion->getReduction());
+
             $order->setReduction($reduction);
 
             // Mise à jour des frais de port de cette commande en fonction de la promotion
@@ -44,7 +48,7 @@ class PromotionService
     }
 
     /**
-     * Calcul de la réduction applicable sur une commande à partir d'une promotion
+     * Calcul de la réduction basé sur le total du panier
      * @param int $orderSousTotalHT
      * @param int $promotionMinAmount
      * @param int $promotionReduction
@@ -57,6 +61,21 @@ class PromotionService
             $reduction = intval($orderSousTotalHT / $promotionMinAmount) * $promotionReduction;
         }
         return $reduction;
+    }
+
+    /**
+     * Calcul de la réduction basé sur le nombre d'articles commandés
+     * @param int $orderNbItems
+     * @param int|null $promotionMinItems
+     * @param int|null $promotionReduction
+     * @return float|int
+     */
+    public function calculReductionMinItems(int $orderNbItems, ?int $promotionMinItems, ?int $promotionReduction): int
+    {
+        if ($promotionMinItems == null){
+            return 0;
+        }
+        return ($orderNbItems >= $promotionMinItems) ? $promotionReduction : 0;
     }
 
     /**
