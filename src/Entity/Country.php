@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\VatRepository;
+use App\Repository\CountryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=VatRepository::class)
+ * @ORM\Entity(repositoryClass=CountryRepository::class)
  */
-class Vat
+class Country
 {
     /**
      * @ORM\Id
@@ -23,15 +23,9 @@ class Vat
     private $title;
 
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=0)
+     * @ORM\Column(type="string", length=3)
      */
-    private $rate;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Country::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $country;
+    private $iso3166Alpha3;
 
     public function __toString()
     {
@@ -55,26 +49,14 @@ class Vat
         return $this;
     }
 
-    public function getRate(): ?string
+    public function getIso3166Alpha3(): ?string
     {
-        return $this->rate;
+        return $this->iso3166Alpha3;
     }
 
-    public function setRate(string $rate): self
+    public function setIso3166Alpha3(string $iso3166Alpha3): self
     {
-        $this->rate = $rate;
-
-        return $this;
-    }
-
-    public function getCountry(): ?Country
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?Country $country): self
-    {
-        $this->country = $country;
+        $this->iso3166Alpha3 = $iso3166Alpha3;
 
         return $this;
     }

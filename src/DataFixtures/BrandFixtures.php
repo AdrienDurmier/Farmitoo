@@ -13,13 +13,13 @@ class BrandFixtures extends Fixture implements DependentFixtureInterface
     {
         $brand1 = new Brand();
         $brand1->setTitle('Farmitoo');
-        $brand1->setVat($this->getReference('tax-20'));
+        $brand1->setVat($this->getReference('fra-taux-normal'));
         $manager->persist($brand1);
         $this->addReference('brand-farmitoo', $brand1);
 
         $brand2 = new Brand();
         $brand2->setTitle('Gallagher');
-        $brand2->setVat($this->getReference('tax-05'));
+        $brand2->setVat($this->getReference('fra-taux-reduit'));
         $manager->persist($brand2);
         $this->addReference('brand-gallagher', $brand2);
 

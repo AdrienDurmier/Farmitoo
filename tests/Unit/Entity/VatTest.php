@@ -3,6 +3,7 @@
 namespace App\Tests\Unit\Entity;
 
 use App\Entity\Vat;
+use App\Entity\Country;
 use PHPUnit\Framework\TestCase;
 
 class VatTest extends TestCase
@@ -30,5 +31,13 @@ class VatTest extends TestCase
         $vat = $this->vat->setRate($value);
         self::assertInstanceOf(Vat::class, $vat);
         self::assertEquals($value, $this->vat->getRate());
+    }
+
+    public function testGetCountry():void
+    {
+        $country = new Country();
+        $vat = $this->vat->setCountry($country);
+        self::assertInstanceOf(Vat::class, $vat);
+        self::assertEquals($country, $this->vat->getCountry());
     }
 }
