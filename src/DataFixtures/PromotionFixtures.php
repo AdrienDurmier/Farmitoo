@@ -16,6 +16,12 @@ class PromotionFixtures extends Fixture
         $promotion1->setFreeDelivery(false);
         $manager->persist($promotion1);
 
+        $promotion1 = new Promotion();
+        $promotion1->setMinAmount(100000);
+        $promotion1->setReduction(0);
+        $promotion1->setFreeDelivery(true);
+        $manager->persist($promotion1);
+
         $manager->flush();
     }
 

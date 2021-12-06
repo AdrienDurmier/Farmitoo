@@ -7,6 +7,47 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class PromotionServiceTest extends KernelTestCase
 {
+    public function testIsApplicableWithIsOnGoingParameter():void
+    {
+        $kernel = self::bootKernel();
+        $promotionService = $kernel->getContainer()->get(PromotionService::class);
+        $isOnGoing = false;
+        $maxUses = null;
+        $minAmount = null;
+        $sousTotalHT = null;
+        $isNotApplicable = $promotionService->isApplicable(false, $maxUses, $minAmount, $sousTotalHT);
+        $this->assertFalse($isNotApplicable);
+    }
+
+    public function testIsApplicableWithMaxUsesParameter():void
+    {
+        $kernel = self::bootKernel();
+        $promotionService = $kernel->getContainer()->get(PromotionService::class);
+        $isOnGoing = true;
+        $maxUses = 3;
+        $minAmount = null;
+        $sousTotalHT = null;
+        $isApplicable = $promotionService->isApplicable($isOnGoing, $maxUses, $minAmount, $sousTotalHT);
+        $this->assertTrue($isApplicable);
+        $isNotApplicable = $promotionService->isApplicable($isOnGoing, 0, $minAmount, $sousTotalHT);
+        $this->assertFalse($isNotApplicable);
+    }
+
+    public function testIsApplicableWithMinAmountParameter():void
+    {
+        $kernel = self::bootKernel();
+        $promotionService = $kernel->getContainer()->get(PromotionService::class);
+        $isOnGoing = true;
+        $maxUses = null;
+        $minAmount = 500;
+        $sousTotalHT = 1000;
+        $isApplicable = $promotionService->isApplicable($isOnGoing, $maxUses, $minAmount, $sousTotalHT);
+        $this->assertTrue($isApplicable);
+        $isNotApplicable = $promotionService->isApplicable($isOnGoing, $maxUses, 2000, $sousTotalHT);
+        $this->assertFalse($isNotApplicable);
+    }
+
+
     public function testCalculReductionWithoutPromotion():void
     {
         $kernel = self::bootKernel();

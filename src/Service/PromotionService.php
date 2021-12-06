@@ -25,13 +25,15 @@ class PromotionService
     public function apply(Order $order): Order
     {
         $promotions = $this->em->getRepository(Promotion::class)->findAll();
+        $reduction = 0;
         foreach ($promotions as $promotion){
-            // Si la promotion est en cours où si le nombre d'usages max est atteint
-            if(!$promotion->isOnGoing(new \DateTime()) || $promotion->getMaxUses()){
+            // D'abord on vérifie si cette promotion est applicable
+            if(!$this->isApplicable($promotion->isOnGoing(new \DateTime()), $promotion->getMaxUses(), $promotion->getMinAmount(), $order->getSousTotalHT())){
                 continue;
             }
+
             // Mise à jour de la réduction sur cette commande basé sur le minimum d'achat (sous total HT)
-            $reduction = $this->calculReduction($order->getSousTotalHT(), $promotion->getMinAmount(), $promotion->getReduction());
+            $reduction += $this->calculReduction($order->getSousTotalHT(), $promotion->getMinAmount(), $promotion->getReduction());
 
             // Mise à jour de la réduction sur cette commande basé sur le minimum d'objet
             $reduction += $this->calculReductionMinItems($order->getCountItems(), $promotion->getMinItems(), $promotion->getReduction());
@@ -51,6 +53,35 @@ class PromotionService
         $this->em->flush();
         return $order;
     }
+
+    /**
+     * Vérifie si la promotion est applicable
+     * @param bool $isOnGoing
+     * @param int|null $maxUses
+     * @param int|null $minAmount
+     * @param int|null $sousTotalHT
+     * @return bool
+     */
+    public function isApplicable(bool $isOnGoing, ?int $maxUses, ?int $minAmount, ?int $sousTotalHT): bool
+    {
+        // Si la promotion n'est pas en cours
+        if(!$isOnGoing){
+            return false;
+        }
+
+        // Si tous les usages ont déjà été appliqués
+        if($maxUses !== null && $maxUses > 0){
+            return true;
+        }
+
+        // Si le montant est atteint
+        if($minAmount < $sousTotalHT){
+            return true;
+        }
+
+        return false;
+    }
+
 
     /**
      * Calcul de la réduction basé sur le total du panier

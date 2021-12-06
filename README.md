@@ -11,6 +11,7 @@
 * --dev orm-fixtures
 * --dev symfony/debug-bundle
 * --dev symfony/maker-bundle
+* --dev symfony/profiler-pack
 
 ### Avec Yarn
 * yarn install
